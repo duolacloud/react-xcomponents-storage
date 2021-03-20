@@ -17,62 +17,33 @@ npm i @xcomponents/storage
 
 ```js
 import React, { useState } from 'react';
-import Storage from '@xcomponents/storage';
+import { useUpload } from '@xcomponents/storage';
 import { Upload } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 
 const Demo = () => {
-  const storage = Storage.create({
+  console.log('Storage', Storage);
+
+  const { props: uploadProps, files } = useUpload({
     platform: 'cos',
+    bucket: 'bucket-11',
+    region: 'region-21',
+    getCredentials: (options, callback) => {
+      console.log('getCredentials');
+      const credentials = {}; // TODO 从服务端获取 credentials
+      callback(credentials);
+    },
+    onUpload: (files: any[]) => {
+      console.log('上传', files);
+    },
   });
-
-  const bucket = '';
-  const region = '';
-
-  const uploadProps = {
-    accept: '*',
-    beforeUpload: file => {
-      return true; // 返回 false 会阻止上传，需要手工去激活上传
-    },
-    customRequest: async ({ file, onError, onProgress, onSuccess }) => {
-      storage.sliceUploadFile({
-        bucket: bucket,
-        region: region,
-        key,
-        body: file,
-        onHashProgress: progress => {
-          console.log('校验中', progress);
-        },
-        onProgress: progress => {
-          const { loaded, total } = progress;
-          console.log(
-            { percent: Math.round((loaded / total) * 100).toFixed(2) },
-            file,
-          );
-        },
-        onError,
-        onSuccess: res => {
-          console.log('complete: ', res);
-        },
-      });
-    },
-  };
-
-  const [filesToUpload, setFilesToUpload] = useState([]);
-
-  const handleChange = ({ fileList }) => {
-    setFilesToUpload(fileList);
-  };
 
   return (
     <>
       上传文件
-      <Upload
-        listType="picture-card"
-        fileList={filesToUpload}
-        onChange={handleChange}
-        multiple={true}
-        {...uploadProps}
-      />
+      <Upload listType="picture-card" multiple={false} {...uploadProps}>
+        <PlusOutlined />
+      </Upload>
     </>
   );
 };

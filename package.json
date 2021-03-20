@@ -1,6 +1,6 @@
 {
   "name": "@xcomponents/storage",
-  "version": "1.0.17",
+  "version": "0.0.2",
   "scripts": {
     "start": "dumi dev",
     "docs:build": "dumi build",
