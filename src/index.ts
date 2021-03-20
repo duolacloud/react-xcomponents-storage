@@ -1,6 +1,7 @@
 import * as Storage from './storage';
 
-export { COSStorage } from './plugins/cos';
+import COSStorage from './plugins/cos';
+export { COSStorage };
 
 export { useUpload, Result } from './hooks';
 export default Storage;

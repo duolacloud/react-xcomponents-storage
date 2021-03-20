@@ -1,1 +1,3 @@
-export * from './cos.storage';
+import COSStorage from './cos.storage';
+export default COSStorage;
+

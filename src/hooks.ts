@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { create } from './storage';
 
 interface Options {
@@ -11,7 +11,6 @@ interface Options {
 
 export interface Result {
   props: any;
-  files: any[];
 }
 
 export function useUpload(options: Options): Result {
@@ -24,14 +23,7 @@ export function useUpload(options: Options): Result {
     [options],
   );
 
-  const [filesToUpload, setFilesToUpload] = useState([]);
-
-  const handleChange = ({ fileList }) => {
-    setFilesToUpload(fileList);
-  };
-
   const props = {
-    handleChange,
     beforeUpload: file => {
       return true; // 返回 false 会阻止上传，需要手工去激活上传
     },
@@ -70,6 +62,5 @@ export function useUpload(options: Options): Result {
 
   return {
     props,
-    files: filesToUpload,
   };
 }
